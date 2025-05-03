@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Concerts</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .img-thumbnail {
+            max-width: 80px;
+            height: auto;
+            border-radius: 5px;
+        }
+        .modal-confirm {
+            color: #636363;
+            width: 400px;
+        }
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+        }
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+        }
+        .modal-confirm .icon-box {
+            color: #fff;
+            position: absolute;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            top: -70px;
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            z-index: 9;
+            background: #ef513a;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+        }
+        .modal-confirm .icon-box i {
+            font-size: 58px;
+            position: relative;
+            top: 3px;
+        }
+        .modal-confirm.modal-dialog {
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Concert Management</h2>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mb-4">
+        <a href="/concerts/admin-dashboard" class="btn btn-secondary btn-custom">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="/concerts/add" class="btn btn-primary btn-custom">
+            <i class="fas fa-plus"></i> Add Concert
+        </a>
+    </div>
+
+    <!-- Concert Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Venue</th>
+                    <th scope="col">Total Seats </th>
+                    <th scope="col">Seats Available</th>
+                    <th scope="col">Price (₹)</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (concerts.length > 0) { %>
+                    <% concerts.forEach(concert => { %>
+                        <tr>
+                            <td>
+                                <% if (concert.image) { %>
+                                    <img src="/uploads/<%= concert.image %>" alt="Concert Image" class="img-thumbnail">
+                                <% } else { %>
+                                    <img src="https://via.placeholder.com/100" alt="No Image" class="img-thumbnail">
+                                <% } %>
+                            </td>
+                            <td><%= concert.name %></td>
+                            <td><%= concert.date %></td>
+                            <td><%= concert.time %></td>
+                            <td><%= concert.venue %></td>
+                            <td><%= concert.seats %></td>
+                            <td><%= concert.availableSeats %></td> <!-- Placeholder for seats occupied -->
+                            <td>₹ <%= concert.price %></td>
+                            <td>
+                                <a href="/concerts/edit/<%= concert._id %>" class="btn btn-warning btn-sm" aria-label="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Delete Button -->
+                                <button  type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<%= concert._id %>" aria-label="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+
+                                <!-- Delete Confirmation Modal -->
+                                <div class="modal fade" id="deleteModal<%= concert._id %>" tabindex="-1" aria-labelledby="deleteModalLabel<%= concert._id %>" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content modal-confirm">
+                                            <div class="modal-header">
+                                                <div class="icon-box">
+                                                    <i class="fas fa-times"></i>
+                                                </div>
+                                                <h4 class="modal-title w-100">Are you sure?</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Do you really want to delete this concert? This process cannot be undone.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="/concerts/delete/<%= concert._id %>" method="POST" class="d-inline">
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                                  
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="9" class="text-center">No concerts found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </
+::contentReference[oaicite:0]{index=0}
+ 

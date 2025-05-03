@@ -1,0 +1,41 @@
+<header class="bg-gray-900 text-white py-4 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center px-6">
+    <!-- Logo -->
+    <a href="/" class="text-2xl font-bold text-yellow-400">ConcertBooker</a>
+
+    <!-- Navigation Menu -->
+    <nav class="hidden md:flex space-x-6">
+      <a href="/" class="hover:text-yellow-400 transition duration-300">Home</a>
+      <a href="/concerts" class="hover:text-yellow-400 transition duration-300">Concerts</a>
+      <a href="/about" class="hover:text-yellow-400 transition duration-300">About</a>
+      <a href="/contact" class="hover:text-yellow-400 transition duration-300">Contact</a>
+    </nav>
+
+    <!-- Booking Button -->
+    <a href="/book" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+      Book Now
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-toggle" class="md:hidden focus:outline-none">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <nav id="mobile-menu" class="hidden md:hidden bg-gray-800 p-4 space-y-2">
+    <a href="/" class="block hover:text-yellow-400">Home</a>
+    <a href="/concerts" class="block hover:text-yellow-400">Concerts</a>
+    <a href="/about" class="block hover:text-yellow-400">About</a>
+    <a href="/contact" class="block hover:text-yellow-400">Contact</a>
+    <a href="/book" class="block bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg text-center">Book Now</a>
+  </nav>
+
+  <script>
+    document.getElementById("menu-toggle").addEventListener("click", function() {
+      document.getElementById("mobile-menu").classList.toggle("hidden");
+    });
+  </script>
+</header>

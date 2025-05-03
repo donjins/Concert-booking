@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Your Tickets | <%= concert.name %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    .ticket-options-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .left-options, .right-summary {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      flex: 1 1 450px;
+      min-width: 320px;
+    }
+
+    h3, h4 {
+      margin-top: 0;
+      color: #222;
+    }
+
+    .ticket-option {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #fafafa;
+      transition: border-color 0.3s ease;
+    }
+
+    .ticket-option:hover {
+      border-color: #888;
+    }
+
+    .ticket-subtext {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .ticket-info {
+      background: #e9f2ff;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .ticket-info h4 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #1a3d7c;
+    }
+
+    .ticket-info ul {
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .ticket-info li {
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .right-summary p {
+      margin: 10px 0;
+      font-size: 0.95rem;
+    }
+
+    .right-summary strong {
+      font-size: 1.1rem;
+      color: #000;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 20px 0;
+    }
+
+    .login-note {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 20px 0 10px;
+    }
+
+    .book-button {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #d81f26;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .book-button:hover {
+      background-color: #b91921;
+    }
+
+    @media screen and (max-width: 768px) {
+      .ticket-options-container {
+        flex-direction: column;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticket-options-container">
+
+    <!-- Left Section -->
+    <div class="left-options">
+      <h3>Please select from the following option(s)</h3>
+
+      <div class="ticket-option selected">
+        <input type="radio" checked>
+        <span>M-Ticket</span>
+        <p class="ticket-subtext">🌱 Save the planet. Use your phone as a ticket.</p>
+
+        <div class="ticket-info">
+          <h4>M-Ticket Information</h4>
+          <ul>
+            <li>Customer(s) can access their ticket(s) from the 'My Profile' section on the app/mobile-web.</li>
+            <li>It is mandatory to present the ticket(s) via app/mobile-web at the venue.</li>
+            <li>No physical ticket(s) are required to enter the venue.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-summary">
+      <% const numTotalPrice = parseFloat(totalPrice); %>
+      <% const numQuantity = parseInt(quantity); %>
+
+      <h4><%= concert.name %></h4>
+      <p><strong>Quantity:</strong> <%= numQuantity %></p>
+      <p><strong>Total Price:</strong> ₹<%= numTotalPrice.toFixed(2) %></p>
+
+      <p><strong>Date & Time:</strong> <%= concert.date %> - <%= concert.time %></p>
+      <p><strong>Venue:</strong> <%= concert.venue %></p>
+
+      <hr>
+
+      <p>Sub-total: ₹<%= numTotalPrice.toFixed(2) %></p>
+      <p>Booking Fee: ₹123.82</p>
+      <h4>Total Amount: ₹<%= (numTotalPrice + 123.82).toFixed(2) %></h4>
+
+      <p class="login-note">
+        Kindly log in using your mobile number/email ID to proceed.
+      </p>
+
+      <form action="/bookings/booking/<%= concert._id %>" method="POST">
+        <input type="hidden" name="quantity" value="<%= numQuantity %>">
+        <input type="hidden" name="totalPrice" value="<%= numTotalPrice %>">
+        <input type="hidden" name="concertId" value="<%= concert._id %>">
+        <button type="submit" class="book-button">Book Now</button>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>

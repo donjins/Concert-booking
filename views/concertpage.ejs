@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= concert.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/styles/concert.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #222;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 15px 30px;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    header h4 {
+      margin: 0;
+      color: #e63946;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 200;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+
+    nav a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .login-btn {
+      background-color: #e63946;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #c62828;
+    }
+
+    .dropbtn {
+      background-color: #e0e0e0;
+      color: #333;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 120px;
+      border-radius: 5px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 12px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f5f5f5;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .concert-container {
+      display: flex;
+      max-width: 1100px;
+      margin: 40px auto;
+      gap: 40px;
+      padding: 0 20px;
+    }
+
+    .concert-left {
+      flex: 1.2;
+    }
+
+    .concert-poster {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .tags {
+      margin-top: 15px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background-color: #e6e6e6;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .concert-right {
+  flex: 0.8;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 25px;
+  background: #f9f9f9;
+  height: 400px;            /* fixed height */
+  overflow-y: auto;         /* enables scroll if content exceeds height */
+  margin-top: 85px;         /* 👈 pushes it down from the top */
+}
+
+
+
+    .details {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+    }
+
+    .details li {
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .ticket-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .ticket-controls button {
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background-color: #efefef;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .price-display {
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .book-btn {
+      background-color: #fa4e61;
+      color: #fff;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .book-btn:hover {
+      background-color: #e33e52;
+    }
+
+    .interested {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    /* NEW: About section scrolling */
+    .about-event {
+      margin-top: 30px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .about-event h2 {
+      margin-bottom: 10px;
+    }
+
+    .about-event p {
+      line-height: 1.6;
+      font-size: 15px;
+      margin: 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h4>🎟 Concert Hub</h4>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/concerts">Events</a>
+      <a href="/bookings">My Bookings</a>
+      <% if (!username) { %>
+        <a href="/login" class="login-btn">Login</a>
+      <% } else { %>
+        <div class="dropdown">
+          <button class="dropbtn"><%= username %></button>
+          <div class="dropdown-content">
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+
+  <main class="concert-container">
+    <div class="concert-left">
+      <!-- ✅ Added concert title -->
+      <h1><%= concert.name %></h1>
+  
+      <img src="/uploads/<%= concert.image %>" alt="Concert Poster" class="concert-poster">
+  
+      <div class="tags">
+        <% if (concert.tags) { %>
+          <% concert.tags.forEach(tag => { %>
+            <span class="tag"><%= tag %></span>
+          <% }) %>
+        <% } %>
+      </div>
+  
+      <!-- ✅ About This Event Section -->
+      <div class="about-event">
+        <h2>About This Event</h2>
+        <p><%= concert.description %></p>
+      </div>
+    </div>
+
+    <div class="concert-right">
+      <ul class="details">
+        <li><strong>Date:</strong> <%= concert.date %></li>
+        <li><strong>Time:</strong> <%= concert.time %></li>
+        <li><strong>Duration:</strong> <%= concert.duration %> Hours</li>
+        <li><strong>Languages:</strong> <%= Array.isArray(concert.languages) ? concert.languages.join(', ') : 'N/A' %></li>
+        <li><strong>Genres:</strong> <%= Array.isArray(concert.genres) ? concert.genres.join(', ') : 'N/A' %></li>
+        <li><strong>Venue:</strong> <%= concert.venue %></li>
+        <li><strong>Price:</strong> ₹<%= concert.price %> per ticket</li>
+      </ul>
+
+      <form action="/bookings/payment/<%= concert._id %>" method="POST">
+        <div class="ticket-controls">
+          <button type="button" onclick="changeQty(-1)">-</button>
+          <span id="ticketCount">1</span>
+          
+          <button type="button" onclick="changeQty(1)">+</button>
+          <input type="hidden" name="quantity" id="quantityInput" value="1">
+          <input type="hidden" name="totalPrice" id="totalPriceInput" value="<%= concert.price %>">
+        </div>
+      
+        <div class="price-display">
+          Total Price: ₹<span id="totalPrice"><%= concert.price %></span>
+        </div>
+      
+        <button type="submit" class="book-btn">Book Now</button>
+      </form>
+      
+    </div>
+  </main>
+
+  <script>
+    const pricePerTicket = <%= concert.price %>;
+    let quantity = 1;
+  
+    function changeQty(delta) {
+      const newQty = quantity + delta;
+  
+      if (newQty < 1) return;
+  
+      if (newQty > 3) {
+        alert("You can only purchase up to 3 tickets.");
+        return;
+      }
+  
+      quantity = newQty;
+  
+      const totalPrice = pricePerTicket * quantity;
+  
+
+      document.getElementById('ticketCount').innerText = quantity;
+      document.getElementById('quantityInput').value = quantity;
+      document.getElementById('totalPrice').innerText = totalPrice;
+      document.getElementById('totalPriceInput').value = totalPrice; // send this in POST
+    }
+  </script>
+  
+
+</body>
+</html>

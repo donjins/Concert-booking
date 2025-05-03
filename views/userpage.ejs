@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Concert Booking | Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 15px 30px;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    header h1 {
+      margin: 0;
+      color: #e63946;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+
+    nav a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .login-btn {
+      background-color: #e63946;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #c62828;
+    }
+
+    .dropbtn {
+      background-color: #e0e0e0;
+      color: #333;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 120px;
+      border-radius: 5px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 12px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f5f5f5;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+  background: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center center/cover no-repeat;
+  height: 350px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 0px 0px;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  background-color: rgba(255, 255, 255, 0.15); /* Light semi-transparent overlay */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-text {
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-text h2 {
+  font-size: 2.5rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.explore-btn {
+  background-color: #ff3c3c;
+  padding: 10px 20px;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.explore-btn:hover {
+  background-color: #cc2e2e;
+}
+
+
+    .concerts-section, .bookings-section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .concerts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      /* margin-top: 20px; */
+    }
+    .concert-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s ease;
+  text-align: left;
+  position: relative;
+}
+
+.concert-card:hover {
+  transform: translateY(-5px);
+}
+
+.concert-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.concert-card:hover img {
+  transform: scale(1.1); /* subtle zoom on hover */
+  cursor: pointer;
+  filter: brightness(1.05);
+  border-radius: 8px 8px 0 0;
+}
+
+
+.concert-info {
+  padding: 10px 15px; /* Cleaned up padding */
+}
+
+.concert-info p {
+  margin: 2px 0; /* Less spacing between paragraphs */
+}
+.book-btn {
+  display: inline-block;
+  background: #e63946; /* vibrant red */
+  color: white;         /* white text */
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.book-btn:hover {
+  background: #c62828;  /* deeper red on hover */
+}
+
+
+
+    .bookings-list {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .bookings-list li {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 12px 20px;
+      margin: 10px 0;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .status {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .status.confirmed { background: #2ecc71; }
+    .status.pending { background: #f1c40f; }
+    .status.cancelled { background: #e74c3c; }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #f1f1f1;
+      margin-top: 30px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎟 Concert Hub</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="#">Events</a>
+      <a href="/bookings/mybookings">My Bookings</a>
+      <% if (!username) { %>
+        <a href="/login" class="login-btn">Login</a>
+      <% } else { %>
+        <div class="dropdown">
+          <button class="dropbtn"><%= username %></button>
+          <div class="dropdown-content">
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-overlay">
+      <div class="hero-text">
+        <h2>🔥 Experience The Best Live Concerts</h2>
+        <p>Book your favorite events now and enjoy the music like never before.</p>
+        <a href="#" class="explore-btn">Explore Events</a>
+      </div>
+    </div>
+  </section>
+  
+
+  <section class="concerts-section">
+    <h2>🎶 Upcoming Concerts</h2>
+    <div class="concerts-grid">
+      <% concerts.forEach(concert => { %>
+        <div class="concert-card">
+          <img src="/uploads/<%= concert.image %>" alt="<%= concert.name %>">
+          <div class="concert-info">
+            <h3><%= concert.name %></h3>
+            <p>📍 <%= concert.venue %></p>
+            <p>📅 <%= concert.date %> | ⏰ <%= concert.time %></p>
+            <p>🎫 Seats: <%= concert.availableSeats %> | 💸 ₹ <%= concert.price %></p>
+            
+            <a href="/bookings/book/<%= concert._id %>" class="book-btn">Book Now</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="bookings-section">
+    <h2>🎟 My Bookings</h2>
+    <ul class="bookings-list">
+      <li>
+        <span>Coldplay Live</span>
+        <span>📅 April 15, 2025</span>
+        <span class="status confirmed">Confirmed</span>
+      </li>
+      <li>
+        <span>Ed Sheeran Tour</span>
+        <span>📅 May 10, 2025</span>
+        <span class="status pending">Pending</span>
+      </li>
+      <li>
+        <span>A.R. Rahman Night</span>
+        <span>📅 June 20, 2025</span>
+        <span class="status cancelled">Cancelled</span>
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Concert Booking. All rights reserved.</p>
+  </footer>
+  <% if (justLoggedIn) { %>
+    <script>
+      const audio = new Audio('/sound/successful.mp3');
+      audio.play().catch(err => {
+        console.log('Autoplay blocked or error playing audio:', err);
+      });
+    </script>
+  <% } %>
+  
+  
+</body>
+</html>

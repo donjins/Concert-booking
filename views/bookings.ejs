@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Concert Bookings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #1f2937;
+      margin-bottom: 40px;
+    }
+
+    .booking-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 25px 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+    }
+
+    .booking-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    .booking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .concert-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .ticket-btn {
+      background-color: #3b82f6;
+      color: #fff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .ticket-btn:hover {
+      background-color: #2563eb;
+    }
+
+    .booking-details {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      font-size: 0.95rem;
+      color: #374151;
+    }
+
+    .detail-item strong {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .no-bookings {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 600px) {
+      .concert-title {
+        font-size: 1.2rem;
+      }
+
+      .ticket-btn {
+        margin-top: 10px;
+      }
+
+      .booking-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Bookings</h1>
+
+    <% if (bookings.length === 0) { %>
+      <p class="no-bookings">You haven't booked any concerts yet. Start exploring now 🎶</p>
+    <% } else { %>
+      <% bookings.forEach(booking => { %>
+        <div class="booking-card">
+          <div class="booking-header">
+            <h2 class="concert-title"><%= booking.concertName %></h2>
+            <a href="/ticket/<%= booking._id %>" class="ticket-btn">View Ticket</a>
+          </div>
+          <div class="booking-details">
+            <div class="detail-item"><strong>Date:</strong> <%= booking.date %></div>
+            <div class="detail-item"><strong>Time:</strong> <%= booking.time %></div>
+            <div class="detail-item"><strong>Venue:</strong> <%= booking.venue %></div>
+            <div class="detail-item"><strong>Quantity:</strong> <%= booking.quantity %></div>
+            <div class="detail-item"><strong>Total:</strong> ₹<%= booking.price %></div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</body>
+</html>
